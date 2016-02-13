@@ -39,11 +39,46 @@ AppAsset::register($this);
         Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
-                ['label' => 'Peticiones', 'url' => ['/request/index']],
-                ['label' => 'Beneficiarios', 'url' => ['/beneficiary/index']],
-                ['label' => 'Tipos de identificación', 'url' => ['/type-identification/index']],
-                ['label' => 'Categorias de peticiones', 'url' => ['/request-category/index']],
-                ['label' => 'Usuarios', 'url' => ['/usuario/index']],
+                [
+                    'label' => 'Peticiones', 
+                    'url' => ['/request/index'],
+                    'visible' => (!Yii::$app->user->isGuest)
+                ],
+                [
+                    'label' => 'Beneficiarios', 
+                    'url' => ['/beneficiary/index'],
+                    'visible' => (!Yii::$app->user->isGuest)
+                ],
+                [
+                    'label' => 'Tipos de identificación', 
+                    'url' => ['/type-identification/index'],
+                    'visible' => (
+                        !Yii::$app->user->isGuest && (
+                            Yii::$app->user->identity->isAdmin() ||
+                            Yii::$app->user->identity->isSuperAdmin()
+                        )
+                    )
+                ],
+                [
+                    'label' => 'Categorias de peticiones', 
+                    'url' => ['/request-category/index'],
+                    'visible' => (
+                        !Yii::$app->user->isGuest && (
+                            Yii::$app->user->identity->isAdmin() ||
+                            Yii::$app->user->identity->isSuperAdmin()
+                        )
+                    )
+                ],
+                [
+                    'label' => 'Usuarios', 
+                    'url' => ['/usuario/index'],
+                    'visible' => (
+                        !Yii::$app->user->isGuest && (
+                            Yii::$app->user->identity->isAdmin() ||
+                            Yii::$app->user->identity->isSuperAdmin()
+                        )
+                    )
+                ],
                 
                 Yii::$app->user->isGuest ?
                     ['label' => 'Login', 'url' => ['/site/login']] :
