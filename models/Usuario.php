@@ -17,10 +17,15 @@ use Yii;
  * @property integer $active
  * @property integer $idPermission
  *
- * @property Permission $idPermission0
+ * @property Permission $permission
  */
-class Usuario extends \yii\db\ActiveRecord
+class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+    public $id;
+    public $rememberMe = true;
+    public $authKey;
+    public $accessToken;
+
     /**
      * @inheritdoc
      */
@@ -32,15 +37,38 @@ class Usuario extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public function beforeSave($insert)
+    {
+        if(parent::beforeSave($insert)) {
+            if($this->isNewRecord) {
+                $security = Yii::$app->getSecurity();
+                $hash = $security->generatePasswordHash($this->password);
+
+                $this->password = $hash;
+            }
+
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
             [['username', 'password', 'name', 'aPaterno', 'idPermission'], 'required'],
             [['active', 'idPermission'], 'integer'],
             [['username'], 'string', 'max' => 200],
+            [['username'], 'unique'],
+            [['username'], 'match', 'pattern' => '/^[a-z]\w*$/i'],
             [['password'], 'string', 'max' => 3000],
             [['name', 'aPaterno', 'aMaterno'], 'string', 'max' => 100],
-            [['email'], 'string', 'max' => 500]
+            [['email'], 'string', 'max' => 500],
+            [['email'], 'email'],
         ];
     }
 
@@ -50,23 +78,108 @@ class Usuario extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idUser' => 'Id User',
+            'idUser'   => 'User ID',
             'username' => 'Username',
             'password' => 'Password',
-            'name' => 'Name',
-            'aPaterno' => 'A Paterno',
-            'aMaterno' => 'A Materno',
-            'email' => 'Email',
-            'active' => 'Active',
-            'idPermission' => 'Id Permission',
+            'name'     => 'First name',
+            'aPaterno' => 'Middle name',
+            'aMaterno' => 'Last name',
+            'email'    => 'Email',
+            'active'   => 'Is active?',
+            'idPermission' => 'Permission',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdPermission0()
+    public function getPermission()
     {
         return $this->hasOne(Permission::className(), ['idPermission' => 'idPermission']);
     }
+
+    /**
+     * Returns a plain string representation of 'active'
+     * property. [Yes | No]
+     */
+    public function getIsActiveText()
+    {
+        return ($this->active == 1) ? 'Yes' : 'No';
+    }
+
+    public function isAdmin()
+    {
+        return $this->idPermission == 2;
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->idPermission == 1;
+    }
+
+    public function isRecorder()
+    {
+        return $this->idPermission == 3;
+    }
+
+
+    /*************************************************************************/
+    /*************************************************************************/
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findByUsername($username)
+    {
+        return static::findOne(['username' => $username]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->idUser;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey() {}
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey)
+    {
+
+    }
+
+    /**
+     * Validates password
+     *
+     * @param  string $password The password to validate
+     * @return boolean if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->getSecurity()->validatePassword($password, $this->password);
+    }
+
 }

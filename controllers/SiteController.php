@@ -6,7 +6,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
+use app\models\Usuario;
 use app\models\ContactForm;
 
 class SiteController extends Controller
@@ -58,9 +58,29 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        $model = new Usuario;
+        if($model->load(Yii::$app->request->post())) {
+            $usuario = Usuario::findByUsername($model->username);
+
+            if($usuario->active == 1) {
+                if($usuario->validatePassword($model->password)) {
+                    $rememberTime = ($model->rememberMe ? 3000*24*30 : 0);
+    
+                    if(Yii::$app->user->login($usuario, $rememberTime))
+                    {
+                        return $this->goBack();
+                    }
+                }
+                else {
+                    $model->addError('password', 'Username or password incorrect');
+                }    
+            }
+            else {
+                $model->addError(
+                    'username', 
+                    'This is user is inactive (Ask to administrator)'
+                );
+            }
         }
         return $this->render('login', [
             'model' => $model,
