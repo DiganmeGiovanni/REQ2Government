@@ -12,24 +12,67 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-md-4"><br/>
+            <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4"><br/>
+            <?php
+                if($model->isNewRecord) {
+                    echo $form->field($model, 'password')->passwordInput(['maxlength' => true]);
+                }
+                else {
+                    echo $form->field($model, 'active')->dropDownList(
+                        ['1' => 'Yes', '0' => 'No'],
+                        []
+                    );
+                }
+            ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4"><br/> 
+            <?= 
+                $form->field($model, 'idPermission')->dropDownList(
+                    $permissions, 
+                    ['prompt' => 'Choose user\'s permission']
+                );
+            ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-md-4"><br/>
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4"><br/> 
+            <?= $form->field($model, 'aPaterno')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4"><br/> 
+            <?= $form->field($model, 'aMaterno')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'aPaterno')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-md-4"><br/> 
+            <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?> 
+        </div>
+    </div>
 
-    <?= $form->field($model, 'aMaterno')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'active')->textInput() ?>
-
-    <?= $form->field($model, 'idPermission')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <div class="row">
+        <div class="col-sm-12"><br/>
+            <div class="form-group">
+                <?= 
+                    Html::submitButton(
+                        $model->isNewRecord ? 'Create' : 'Update', 
+                        [
+                            'class' => $model->isNewRecord ? 
+                                    'btn btn-success' : 
+                                    'btn btn-primary'
+                        ]
+                    ); 
+                ?>
+            </div>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

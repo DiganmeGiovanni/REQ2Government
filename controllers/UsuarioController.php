@@ -3,10 +3,13 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Permission;
 use app\models\Usuario;
 use app\models\search\UsuarioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
 /**
@@ -17,6 +20,26 @@ class UsuarioController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    array(
+                        'actions' => [
+                            'create',
+                            'delete',
+                            'index',
+                            'update',
+                            'view',
+                        ],
+                        'allow' => (
+                            (!Yii::$app->user->isGuest) && (
+                                Yii::$app->user->identity->isAdmin() ||
+                                Yii::$app->user->identity->isSuperAdmin()
+                            )
+                        ),
+                    ),
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -61,12 +84,23 @@ class UsuarioController extends Controller
     public function actionCreate()
     {
         $model = new Usuario();
+        $model->active = 1;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idUser]);
-        } else {
+        }
+        else {
+
+            // Available permisisons
+            $permissions = ArrayHelper::map(
+                Permission::find()->asArray()->all(),
+                'idPermission',
+                'name'
+            );
+
             return $this->render('create', [
                 'model' => $model,
+                'permissions' => $permissions
             ]);
         }
     }
@@ -83,9 +117,19 @@ class UsuarioController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idUser]);
-        } else {
+        }
+        else {
+            
+            // Available permisisons
+            $permissions = ArrayHelper::map(
+                Permission::find()->asArray()->all(),
+                'idPermission',
+                'name'
+            );
+
             return $this->render('update', [
                 'model' => $model,
+                'permissions' => $permissions
             ]);
         }
     }

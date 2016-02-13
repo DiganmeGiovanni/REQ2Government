@@ -7,36 +7,115 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\search\UsuarioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Usuarios';
+$this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="usuario-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Usuario', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <br/><br/>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'idUser',
+            [
+                'attribute' => 'idPermission',
+                'value' => 'permission.name'
+            ],
             'username',
-            'password',
             'name',
             'aPaterno',
-            // 'aMaterno',
-            // 'email:email',
-            // 'active',
-            // 'idPermission',
+            'aMaterno',
+            'email:email',
+            [
+                'attribute' => 'active',
+                'value' => 'isActiveText'
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete}',
+                'buttons' => [
+                    'update' => function($url, $model, $key) {
+                        if($model->isSuperAdmin()) {
+                            if(Yii::$app->user->identity->isSuperAdmin()) {
+                                return Html::a(
+                                    '<span class="glyphicon glyphicon-pencil"></span>',
+                                    $url
+                                );
+                            }
 
-            ['class' => 'yii\grid\ActionColumn'],
+                            return "";
+                        }
+
+                        if(Yii::$app->user->identity->isAdmin() || 
+                            Yii::$app->user->identity->isSuperAdmin()) 
+                        {
+                            return Html::a(
+                                '<span class="glyphicon glyphicon-pencil"></span>',
+                                $url
+                            );
+                        }
+
+                        return "";
+                    },
+                    
+                    'delete' => function($url, $model, $key) {
+                        if($model->isSuperAdmin()) {
+                            if(Yii::$app->user->identity->isSuperAdmin()) {
+                                return Html::a(
+                                    '<span class="glyphicon glyphicon-trash"></span>',
+                                    $url
+                                );
+                            }
+
+                            return "";
+                        }
+
+                        if(Yii::$app->user->identity->isAdmin() || 
+                            Yii::$app->user->identity->isSuperAdmin())
+                        { 
+                            return Html::a(
+                                '<span class="glyphicon glyphicon-trash"></span>',
+                                $url
+                            );
+                        }
+
+                        return "";
+                    },
+                ]
+            ],
         ],
     ]); ?>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
