@@ -14,6 +14,7 @@ use Yii;
  */
 class TypeIdentification extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -38,7 +39,7 @@ class TypeIdentification extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idTypeIdentification' => 'Id Type Identification',
+            'idTypeIdentification' => 'Identification type ID',
             'name' => 'Name',
         ];
     }

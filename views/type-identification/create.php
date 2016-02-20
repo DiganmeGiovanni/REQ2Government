@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\TypeIdentification */
 
-$this->title = 'Create Type Identification';
-$this->params['breadcrumbs'][] = ['label' => 'Type Identifications', 'url' => ['index']];
+$this->title = 'Create identification type';
+$this->params['breadcrumbs'][] = ['label' => 'Identification types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="type-identification-create">

@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\TypeIdentification */
 
-$this->title = 'Update Type Identification: ' . ' ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Type Identifications', 'url' => ['index']];
+$this->title = 'Update identification type: ' . ' ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Identification types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->idTypeIdentification]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

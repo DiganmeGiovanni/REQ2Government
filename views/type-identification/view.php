@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\TypeIdentification */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Type Identifications', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Identification types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="type-identification-view">
@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <br/><br/>
     </p>
 
     <?= DetailView::widget([
