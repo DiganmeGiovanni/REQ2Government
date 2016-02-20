@@ -13,22 +13,31 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="request-category-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Create Request Category', ['create'], ['class' => 'btn btn-success']) ?>
+        <br/><br/>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'idRequestCategory',
             'name',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete}',
+                'buttons' => [
+                    'delete' => function($url, $model, $key) {
+                        if(count($model->requests) == 0) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url);
+                        }
 
-            ['class' => 'yii\grid\ActionColumn'],
+                        return "";
+                    }
+                ]
+            ],
         ],
     ]); ?>
 

@@ -7,6 +7,7 @@ use app\models\RequestCategory;
 use app\models\search\RequestCategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
 /**
@@ -17,6 +18,26 @@ class RequestCategoryController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    array(
+                        'actions' => [
+                            'create',
+                            'delete',
+                            'index',
+                            'update',
+                            'view'
+                        ],
+                        'allow' => (
+                            (!Yii::$app->user->isGuest) && (
+                                Yii::$app->user->identity->isAdmin() ||
+                                Yii::$app->user->identity->isSuperAdmin()
+                            )
+                        )
+                    )
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

@@ -14,6 +14,7 @@ use Yii;
  */
 class RequestCategory extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -38,7 +39,7 @@ class RequestCategory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idRequestCategory' => 'Id Request Category',
+            'idRequestCategory' => 'Category ID',
             'name' => 'Name',
         ];
     }
