@@ -60,7 +60,7 @@ AppAsset::register($this);
                     )
                 ],
                 [
-                    'label' => 'Requests categories', 
+                    'label' => 'Request categories', 
                     'url' => ['/request-category/index'],
                     'visible' => (
                         !Yii::$app->user->isGuest && (
