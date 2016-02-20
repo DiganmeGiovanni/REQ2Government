@@ -62,23 +62,32 @@ class SiteController extends Controller
         if($model->load(Yii::$app->request->post())) {
             $usuario = Usuario::findByUsername($model->username);
 
-            if($usuario->active == 1) {
-                if($usuario->validatePassword($model->password)) {
-                    $rememberTime = ($model->rememberMe ? 3000*24*30 : 0);
-    
-                    if(Yii::$app->user->login($usuario, $rememberTime))
-                    {
-                        return $this->goBack();
+            if(isset($usuario)) {
+                if(isset($usuario) && $usuario->active == 1) {
+                    if($usuario->validatePassword($model->password)) {
+                        $rememberTime = ($model->rememberMe ? 3000*24*30 : 0);
+                
+                        if(Yii::$app->user->login($usuario, $rememberTime))
+                        {
+                            return $this->goBack();
+                        }
                     }
+                    else {
+                        $model->addError('password', 'Username or password incorrect');
+                    }    
                 }
                 else {
-                    $model->addError('password', 'Username or password incorrect');
-                }    
+                    $model->addError(
+                        'username', 
+                        'This is user is inactive (Ask to administrator)'
+                    );
+                }
+
             }
             else {
                 $model->addError(
-                    'username', 
-                    'This is user is inactive (Ask to administrator)'
+                    'username',
+                    'User not found'
                 );
             }
         }
