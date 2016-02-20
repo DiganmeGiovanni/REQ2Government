@@ -40,17 +40,17 @@ AppAsset::register($this);
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
                 [
-                    'label' => 'Peticiones', 
+                    'label' => 'Requests', 
                     'url' => ['/request/index'],
                     'visible' => (!Yii::$app->user->isGuest)
                 ],
                 [
-                    'label' => 'Beneficiarios', 
+                    'label' => 'Beneficiaries', 
                     'url' => ['/beneficiary/index'],
                     'visible' => (!Yii::$app->user->isGuest)
                 ],
                 [
-                    'label' => 'Tipos de identificación', 
+                    'label' => 'Identification types', 
                     'url' => ['/type-identification/index'],
                     'visible' => (
                         !Yii::$app->user->isGuest && (
@@ -60,7 +60,7 @@ AppAsset::register($this);
                     )
                 ],
                 [
-                    'label' => 'Categorias de peticiones', 
+                    'label' => 'Requests categories', 
                     'url' => ['/request-category/index'],
                     'visible' => (
                         !Yii::$app->user->isGuest && (
@@ -70,7 +70,7 @@ AppAsset::register($this);
                     )
                 ],
                 [
-                    'label' => 'Usuarios', 
+                    'label' => 'Users', 
                     'url' => ['/usuario/index'],
                     'visible' => (
                         !Yii::$app->user->isGuest && (
