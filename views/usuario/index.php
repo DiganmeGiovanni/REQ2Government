@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\UsuarioSearch */
@@ -17,6 +18,35 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
         <br/><br/>
+    </p>
+
+    <p>
+        <?=
+        ExportMenu::widget([
+            'asDropdown' => false,
+            'dataProvider' => $dataProvider,
+            'exportConfig' => [
+                ExportMenu::FORMAT_HTML => false,
+                ExportMenu::FORMAT_CSV => false,
+                ExportMenu::FORMAT_TEXT => false,
+                ExportMenu::FORMAT_PDF => false,
+                ExportMenu::FORMAT_EXCEL => [
+                    'label' => 'Exportar a Excel'
+                ],
+                ExportMenu::FORMAT_EXCEL_X => false,
+            ],
+            'filename' => 'Reporte de usuarios',
+            'showConfirmAlert' => false,
+            'target' => ExportMenu::TARGET_BLANK,
+            'columns' => [
+                'idUser',
+                'username',
+                'name',
+                'aPaterno',
+                'aMaterno'
+            ]
+        ])
+        ?>
     </p>
 
     <?= GridView::widget([
