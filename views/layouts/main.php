@@ -27,8 +27,11 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'REQ2Government',
+        'brandLabel' => Html::img('@web/img/order.png', ['alt' => Yii::$app->name, 'width' => '35px', 'height' => '35px']),
         'brandUrl'   => Yii::$app->homeUrl,
+        'brandOptions' => [
+            'style' => 'padding: 7px'
+        ],
         'options'    => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],

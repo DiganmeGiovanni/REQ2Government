@@ -1,5 +1,7 @@
 <?php
 
+use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
@@ -7,11 +9,11 @@ $this->title = 'My Yii Application';
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <?= Html::img('@web/img/order.png', ['alt' => '', 'height' => '150px', 'width' => '150px']) ?>
+        <h1>Request to u Government</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p class="lead">You can write your request as a letter for the Government office</p>
+        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started!</a></p>
     </div>
 
     <div class="body-content">
